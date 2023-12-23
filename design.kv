@@ -1,0 +1,34 @@
+<MyGridLayout>
+
+    name:name
+    email:email
+    phno:phno
+
+
+    GridLayout:
+        cols:1
+        size: root.width, root.height
+        GridLayout:
+            cols:2
+
+            Label:
+                text: "Name"
+            TextInput:
+                id:name
+                multiline:False
+
+            Label:
+                text: "Email"
+            TextInput:
+                id:email
+                multiline:False
+            
+            Label:
+                text: "Phone Number"
+            TextInput:
+                id:phno
+                multiline:False
+        Button:
+            text: "Submit"
+            font_size: 32
+            on_press: root.press()
