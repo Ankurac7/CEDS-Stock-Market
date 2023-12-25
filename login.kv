@@ -1,10 +1,5 @@
 Screen:
 
-    MDTopAppBar:
-        title: "Stock Prediction App"
-        left_action_items: [["menu"]]
-        right_action_items: [["dots-vertical"]]
-
     
     MDCard:
         size_hint: None, None
@@ -61,8 +56,16 @@ Screen:
             size_hint_y: None
             height: 5
 
-    MDBottomAppBar:
-        MDTopAppBar:
-            icon: 'git'
-            type: 'bottom'
-            mode: "end"
+    MDFloatingActionButtonSpeedDial:
+        data: app.data
+        root_button_anim: True
+        #Color stuff
+        #label_text_color: 1,0,0,1 # Text color
+        #bg_color_stack_button: 1,0,0,1 # bg of icon
+        #bg_color_root_button: 1,0,0,1 # speed dial bg
+        #color_icon_root_button: 1,0,0,1 # speed dial text color
+        #color_icon_stack_button: 1,0,0,1 # icond text color
+        bg_hint_color: 1,0,0,1 # icon bgcolor
+
+        #Pushing the buttons
+        callback: app.callback

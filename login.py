@@ -3,6 +3,21 @@ from kivymd.app import MDApp
 
 
 class StockPredictionApp(MDApp):
+
+	data = {
+    "Register": "account-plus",
+    "Exit": "close"
+	}
+
+	def callback(self, instance):
+		if instance.icon == 'account-plus':
+			lang = "Register"
+		elif instance.icon == 'close':
+			lang = "Exit"
+
+		self.root.ids.my_label.text = f'You Pressed {lang}'
+
+
 	def build(self):
 		self.theme_cls.theme_style= "Light"
 		self.theme_cls.primary_palette = "DeepPurple"
