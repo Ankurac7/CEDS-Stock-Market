@@ -1,0 +1,28 @@
+<RootLayout>:
+    padding: dp(16)
+    spacing: dp(16)
+
+    MDTextField:
+        id: search_bar
+        hint_text: "Enter stock symbol..."
+        helper_text: "e.g., AAPL for Apple Inc."
+        mode: "rectangle"
+    
+    MDLabel:
+        id: graph_placeholder
+        text: "Graph will be plotted here"
+        halign: "center"
+        valign: "middle"
+    
+    MDLabel:
+        id: current_stock_details
+        text: "Current stock details will be shown here"
+        halign: "center"
+        valign: "middle"
+        size_hint_y: None
+        height: dp(100)  # adjust as needed
+    
+    MDRaisedButton:
+        text: "Fetch Stock Details"
+        pos_hint: {'center_x': 0.5}
+        on_release: root.fetch_stock_details()
