@@ -1,14 +1,8 @@
 Screen:
 
-    MDTopAppBar:
-        title: "Stock Prediction App"
-        left_action_items: [["menu"]]
-        right_action_items: [["dots-vertical"]]
-
-    
     MDCard:
         size_hint: None, None
-        size: 350, 500
+        size: 350, 600
         pos_hint: {"center_x": 0.5, "center_y": 0.5}
         elevation: 3
         padding: 25
@@ -16,8 +10,8 @@ Screen:
         orientation: 'vertical'
     
         MDLabel:
-            id: login_page
-            text: "Login Page"
+            id: reg_page
+            text: "Registration Page"
             font_size: 40
             halign: 'center'
             size_hint_y: None
@@ -25,9 +19,8 @@ Screen:
             padding_y: 15
 
         MDTextField:
-            id: user
-            hint_text: "Username"
-            #mode: "round"
+            id: reg_user
+            hint_text: "Enter Username"
             icon_right: "account"
             size_hint_x: None
             width: 250
@@ -35,9 +28,18 @@ Screen:
             pos_hint: {"center_x": 0.5}
 
         MDTextField:
-            id: password
-            hint_text: "Password"
-            #mode: "round"
+            id: reg_password
+            hint_text: "Enter Password"
+            icon_right: "eye-off"
+            size_hint_x: None
+            width: 250
+            font_size: 18
+            pos_hint: {"center_x": 0.5}
+            password: True
+
+        MDTextField:
+            id: confirm_password
+            hint_text: "Confirm Password"
             icon_right: "eye-off"
             size_hint_x: None
             width: 250
@@ -46,23 +48,18 @@ Screen:
             password: True
 
         MDRaisedButton:
-            text: "LOG IN"
+            text: "REGISTER"
             font_size: 12
             pos_hint: {"center_x": 0.5}
-            on_press: app.logger()
+            on_press: app.register()
         
         MDRaisedButton:
             text: "CLEAR"
             font_size: 12
             pos_hint: {"center_x": 0.5}
-            on_press: app.clear()
+            on_press: app.clear_registration_fields()
+
 
         Widget:
             size_hint_y: None
             height: 5
-
-    MDBottomAppBar:
-        MDTopAppBar:
-            icon: 'git'
-            type: 'bottom'
-            mode: "end"
