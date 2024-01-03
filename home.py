@@ -12,7 +12,7 @@ class StockPredictionApp(MDApp):
             self.conn = mysql.connector.connect(
                 host="localhost",
                 user="root",
-                password="Shaurya@1234",
+                password="ankur123",
                 database="StockPredictionAppDB"
             )
             self.cursor = self.conn.cursor()

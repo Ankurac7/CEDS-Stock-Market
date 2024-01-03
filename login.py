@@ -10,8 +10,9 @@ class StockPredictionApp(MDApp):
             self.conn = mysql.connector.connect(
                 host="localhost",
                 user="root",
-                password="Shaurya@1234",
-                database="StockPredictionAppDB"
+                password="ankur123",
+                database="StockPredictionAppDB",
+                auth_plugin='mysql_native_password'
             )
             self.cursor = self.conn.cursor()
         except mysql.connector.Error as err:
@@ -39,9 +40,15 @@ class StockPredictionApp(MDApp):
         return Builder.load_file('login.kv')
 
     def navigate_to_home(self):
-        self.root.clear_widgets()
-        # Assuming 'home.kv' contains the layout for the home screen
-        self.root.add_widget(Builder.load_file('home.kv'))
+        if self.root is not None:
+            home_widget = Builder.load_file('home.kv')
+            if home_widget is not None:
+                self.root.add_widget(home_widget)
+            else:
+                print("Error loading 'home.kv'")
+        else:
+            print("Error: App root is None")
+
 
     def logger(self):
         username = self.root.ids.user.text
