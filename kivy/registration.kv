@@ -1,0 +1,76 @@
+Screen:
+
+    MDCard:
+        size_hint: None, None
+        size: 350, 600
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+        elevation: 3
+        padding: 25
+        spacing: 25
+        orientation: 'vertical'
+    
+        MDLabel:
+            id: reg_page
+            text: "Registration Page"
+            font_size: 40
+            halign: 'center'
+            size_hint_y: None
+            height: self.texture_size[1]
+            padding_y: 15
+
+        MDTextField:
+            id: reg_user
+            hint_text: "Enter Username"
+            icon_right: "account"
+            size_hint_x: None
+            width: 250
+            font_size: 18
+            pos_hint: {"center_x": 0.5}
+
+        MDTextField:
+            id: reg_password
+            hint_text: "Enter Password"
+            icon_right: "eye-off"
+            size_hint_x: None
+            width: 250
+            font_size: 18
+            pos_hint: {"center_x": 0.5}
+            password: True
+
+        MDTextField:
+            id: confirm_password
+            hint_text: "Confirm Password"
+            icon_right: "eye-off"
+            size_hint_x: None
+            width: 250
+            font_size: 18
+            pos_hint: {"center_x": 0.5}
+            password: True
+
+        MDRaisedButton:
+            text: "REGISTER"
+            font_size: 12
+            pos_hint: {"center_x": 0.5}
+            on_press: app.register()
+        
+        MDRaisedButton:
+            text: "CLEAR"
+            font_size: 12
+            pos_hint: {"center_x": 0.5}
+            on_press: app.clear_registration_fields()
+
+
+        Widget:
+            size_hint_y: None
+            height: 5
+
+        MDRaisedButton:
+            text: "Register"
+        on_press: 
+            app.register()  # Assuming this method handles registration
+            app.root.current = 'login_page'
+
+        MDRaisedButton:
+            text: "Back to Login"
+        on_press: 
+            app.root.current = 'login_page'
