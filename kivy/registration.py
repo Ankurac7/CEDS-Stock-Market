@@ -10,8 +10,9 @@ class StockPredictionApp(MDApp):
             self.conn = mysql.connector.connect(
                 host="localhost",
                 user="root",
-                password="Shaurya@1234",
-                database="StockPredictionAppDB"
+                password="ankur123",
+                database="StockPredictionAppDB",
+                auth_plugin='mysql_native_password'
             )
             self.cursor = self.conn.cursor()
         except mysql.connector.Error as err:

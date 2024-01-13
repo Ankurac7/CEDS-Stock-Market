@@ -6,6 +6,24 @@ from kivymd.uix.button import MDRaisedButton
 from kivy.graphics import Color, Rectangle
 
 class StockPredictionApp(MDApp):
+<<<<<<< HEAD:kivy/temp/main.py
+=======
+    def connect_to_database(self):
+        try:
+            self.conn = mysql.connector.connect(
+                host="localhost",
+                user="root",
+                password="ankur123",
+                database="StockPredictionAppDB"
+            )
+            self.cursor = self.conn.cursor()
+        except mysql.connector.Error as err:
+            print(f"Error connecting to database: {err}")
+            exit(1)
+
+    def hash_password(self, password):
+        return hashlib.sha256(password.encode()).hexdigest()
+>>>>>>> ada92d98800f54fe98f0fb9fb99764da469f7037:home.py
 
     def build(self):
         self.theme_cls.primary_palette = "BlueGray"
