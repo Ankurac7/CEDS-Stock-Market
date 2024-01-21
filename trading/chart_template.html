@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/lightweight-charts@latest/dist/lightweight-charts.standalone.production.js"></script>
+</head>
+<body>
+    <div id="chart-container"></div>
+
+    <script>
+        // Replace this placeholder with actual chart data
+        var chartData = CHART_DATA_PLACEHOLDER;
+
+        var chart = LightweightCharts.createChart(document.getElementById('chart-container'), {
+            width: 800,
+            height: 600,
+        });
+
+        var candlestickSeries = chart.addCandlestickSeries();
+
+        // Apply chart data
+        candlestickSeries.setData(chartData);
+    </script>
+</body>
+</html>

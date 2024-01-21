@@ -1,0 +1,30 @@
+{
+  "name": "MyApp",
+  "version": "1.0",
+  "type": "application",
+  "main": "app.py",
+  "qml": {
+    "qt": "5.15.2",
+    "modules": {
+      "Core": true,
+      "Gui": true,
+      "Widgets": true
+    }
+  },
+  "android": {
+    "permissions": [
+      "INTERNET"
+    ]
+  },
+  "files": [
+    "path/to/resources/*"
+  ],
+  "distpath": "output",
+  "package": {
+    "name": "com.example.myapp",
+    "version": "1.0",
+    "author": "Author Name",
+    "author_email": "author@example.com",
+    "description": "My PyQt5 App for Android"
+  }
+}
