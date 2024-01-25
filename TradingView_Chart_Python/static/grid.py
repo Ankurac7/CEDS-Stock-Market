@@ -9,22 +9,22 @@ if __name__ == '__main__':
     chart3 = chart2.create_subchart(position='left', width=0.5, height=0.5)
     chart4 = chart3.create_subchart(position='right', width=0.5, height=0.5)
 
-    chart.watermark('MSFT')
-    chart2.watermark('NVDA')
-    chart3.watermark('AAPL')
-    chart4.watermark('GOOG')
+    chart.watermark('period=5y, interval= 3mo')
+    chart2.watermark('period= 5y, interval= 1d')
+    chart3.watermark('period= 5y, interval= 1wk')
+    chart4.watermark('period= 5y, interval= 1mo')
 
     msft = yf.Ticker("MSFT")
-    df = msft.history(period="1y")
+    df = msft.history(period="5y", interval='3mo')
 
-    nvda = yf.Ticker("NVDA")
-    df2 = nvda.history(period="1y")
+    nvda = yf.Ticker("MSFT")
+    df2 = nvda.history(period="5y", interval='1d')
 
-    aapl = yf.Ticker("AAPL")
-    df3 = aapl.history(period="1y")
+    aapl = yf.Ticker("MSFT")
+    df3 = aapl.history(period="5y", interval='1wk')
 
-    goog = yf.Ticker("GOOG")
-    df4 = goog.history(period="1y")
+    goog = yf.Ticker("MSFT")
+    df4 = goog.history(period="5y", interval='1mo')
 
     # this library expects lowercase columns for date, open, high, low, close, volume
     df = df.reset_index()
