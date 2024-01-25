@@ -1,12 +1,15 @@
 import sys
 import yfinance as yf
 import pandas as pd
+import pandas_ta as ta
 import mplfinance as mpf
 import matplotlib.pyplot as plt
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QLineEdit, QPushButton, QTextEdit, QComboBox
 from PyQt5.QtGui import QFont
-from PyQt5.QtCore import QThread, pyqtSignal
-from PyQt5.QtWidgets import qApp
+from PyQt5.QtCore import QThread, pyqtSignal, QUrl
+from PyQt5.QtWidgets import qApp, QWidget
+from PyQt5.QtWebEngineWidgets import QWebEngineView  
+from lightweight_charts import Chart
 import qdarkstyle  # Import QDarkStyle
 
 class FetchDataThread(QThread):
@@ -44,15 +47,55 @@ class FetchDataThread(QThread):
         except Exception as e:
             self.signal.emit({'error': str(e)})
 
+# class ChartWidget(QWidget):
+#     def __init__(self, chart):
+#         super().__init__()
+#         self.chart = chart
+#         self.layout = QVBoxLayout(self)
+#         self.layout.addWidget(self.chart)
+#         self.setLayout(self.layout)
+
 class CandlestickWindow(QWidget):
-    def __init__(self, df, ticker):
+    def __init__(self, user_input):
         super().__init__()
-        self.setWindowTitle(f'Candlestick Chart for {ticker}')
-        df.index.name = 'Date'
-        mpf.plot(df, type='candle', style='yahoo', title=f'Candlestick Chart for {ticker}', volume=True,
-                 show_nontrading=True, axtitle=f"{ticker} Stock Price")
+
+        # Set up the lightweight chart
+        self.chart = Chart()
+
+        # Create custom widget for the chart
+        # self.chart_widget = ChartWidget(self.chart)
+
         layout = QVBoxLayout(self)
+        layout.addWidget(self.chart)
         self.setLayout(layout)
+
+        # Load TradingView chart data
+        self.load_tradingview_chart(user_input)
+
+    def load_tradingview_chart(self, user_input):
+        # Replace 'symbol' with the desired stock symbol (e.g., 'AAPL')
+        symbol = user_input
+
+        msft = yf.Ticker(symbol)
+        df = msft.history(period="1y")
+
+        # prepare indicator values
+        sma = df.ta.sma(length=20).to_frame()
+        sma = sma.reset_index()
+        sma = sma.rename(columns={"Date": "time", "SMA_20": "value"})
+        sma = sma.dropna()
+
+        # this library expects lowercase columns for date, open, high, low, close, volume
+        df = df.reset_index()
+        df.columns = df.columns.str.lower()
+        self.chart.set(df)
+
+        # add sma line
+        line = self.chart.create_line()
+        line.set(sma)
+
+        self.chart.watermark(symbol)
+        self.chart.show(block=True)
 
 class StockPredictionApp(QWidget):
     def __init__(self):
@@ -107,6 +150,7 @@ class StockPredictionApp(QWidget):
         self.layout.addWidget(self.macd_signal_graph_button)
         self.layout.addWidget(self.candlestick_chart_button)
         self.layout.addWidget(self.RSI_button)
+        self.candlestick_window = None
         self.setLayout(self.layout)
 
     def start_fetching_data(self):
@@ -140,11 +184,11 @@ class StockPredictionApp(QWidget):
 
     def plot_candlestick_chart(self):
         user_input = self.input_text.text()
-        time_span = self.time_span_combobox.currentText().split()[0].lower()
-        df = yf.download(user_input, start='2023-01-01', end=pd.to_datetime('today').strftime('%Y-%m-%d'))
-        candlestick_window = CandlestickWindow(df, user_input)
-        candlestick_window.setGeometry(200, 200, 1200, 600)
-        candlestick_window.show()
+        if self.candlestick_window is not None:
+            self.candlestick_window.close()  # Close previous window if any
+        self.candlestick_window = CandlestickWindow(user_input)
+        self.candlestick_window.setGeometry(200, 200, 1200, 600)
+        self.candlestick_window.show()
 
     def plot_macd_crossover_graph(self):
         user_input = self.input_text.text()
