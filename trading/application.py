@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import sys
 import yfinance as yf
 import pandas as pd
@@ -10,7 +9,6 @@ from PyQt5.QtCore import QThread, pyqtSignal, QDate
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 import qdarkstyle
-import os
 
 # List of Nifty 50 stock symbols
 nifty_50_symbols = [
@@ -62,11 +60,17 @@ class StockPredictionApp(QWidget):
         self.input_text.setText('HDFCBANK.NS')
         self.input_text.setFixedSize(200, 30)
 
-        self.date_label = QLabel('Select Start Date:', self)
-        self.date_picker = QDateEdit(self)
-        self.date_picker.setCalendarPopup(True)
-        self.date_picker.setDate(QDate.currentDate().addDays(-365))  # Default to one year ago
-        self.date_picker.setFixedSize(200, 30)
+        self.start_date_label = QLabel('Select Start Date:', self)
+        self.start_date_picker = QDateEdit(self)
+        self.start_date_picker.setCalendarPopup(True)
+        self.start_date_picker.setDate(QDate.currentDate().addDays(-365))  # Default to one year ago
+        self.start_date_picker.setFixedSize(200, 30)
+
+        self.end_date_label = QLabel('Select End Date:', self)
+        self.end_date_picker = QDateEdit(self)
+        self.end_date_picker.setCalendarPopup(True)
+        self.end_date_picker.setDate(QDate.currentDate())  # Default to current date
+        self.end_date_picker.setFixedSize(200, 30)
 
         self.time_span_label = QLabel('Select Time Span:', self)
         self.time_span_combobox = QComboBox(self)
@@ -91,8 +95,10 @@ class StockPredictionApp(QWidget):
         self.layout = QVBoxLayout(self)
         self.layout.addWidget(self.input_label)
         self.layout.addWidget(self.input_text)
-        self.layout.addWidget(self.date_label)
-        self.layout.addWidget(self.date_picker)
+        self.layout.addWidget(self.start_date_label)
+        self.layout.addWidget(self.start_date_picker)
+        self.layout.addWidget(self.end_date_label)
+        self.layout.addWidget(self.end_date_picker)
         self.layout.addWidget(self.time_span_label)
         self.layout.addWidget(self.time_span_combobox)
         self.layout.addWidget(self.submit_button)
@@ -104,8 +110,8 @@ class StockPredictionApp(QWidget):
 
     def start_fetching_data(self):
         user_input = self.input_text.text()
-        start_date = self.date_picker.date().toPyDate().strftime('%Y-%m-%d')
-        end_date = pd.to_datetime('today').strftime('%Y-%m-%d')
+        start_date = self.start_date_picker.date().toPyDate().strftime('%Y-%m-%d')
+        end_date = self.end_date_picker.date().toPyDate().strftime('%Y-%m-%d')
         time_span = self.time_span_combobox.currentText().split()[0].lower()
         self.output_text.clear()
         self.output_text.append("Fetching data... Please wait.")
@@ -134,7 +140,7 @@ class StockPredictionApp(QWidget):
             self.plot_RSI_graph()
         elif selected_option == 'EMA':
             self.plot_ema_graph()
-            
+
     def plot_macd_crossover_graph(self):
         user_input = self.input_text.text()
         time_span = self.time_span_combobox.currentText().split()[0].lower()
@@ -181,7 +187,7 @@ class StockPredictionApp(QWidget):
         df['26_EMA'] = df['Close'].ewm(span=26, adjust=False).mean()
         df['MACD'] = df['12_EMA'] - df['26_EMA']
         df['Signal_Line'] = df['MACD'].ewm(span=9, adjust=False).mean()
-    
+
         df['Cumulative_Returns'] = (1 + df['Close'].pct_change()).cumprod() - 1
 
         self.canvas.axes.clear()
@@ -206,8 +212,6 @@ class StockPredictionApp(QWidget):
         self.canvas.axes.plot(df.index, df['Signal_Line'], label='Signal Line', color='red')
         self.canvas.axes.legend()
         self.canvas.draw()
-    
-    
 
     def plot_candlestick_chart_method(self, df):
         df.index.name = 'Date'
@@ -247,7 +251,6 @@ class StockPredictionApp(QWidget):
         self.canvas.axes.axhline(30, color='green', linestyle='--', label='Oversold (30)')
         self.canvas.axes.legend()
         self.canvas.draw()
-
 
 
 if __name__ == '__main__':
