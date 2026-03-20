@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import sys
 import yfinance as yf
 import pandas as pd
